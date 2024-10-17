@@ -26,7 +26,7 @@ alb <- read.csv('Project1_Albums.csv')
 
 # **Introduction**
 
-Today the data set I will be using was retrieved from the online website github. Within the online description, it can be found that that data set was originally downloaded from a public excel sheet labeling the Rolling Stone top 500 albums from 2020. The data set was thing cleaned and restructured, consisting of unifying syntax and replacing empty cells. The data set consists of variables such as genre, year released, album names, and the ranking themselves. With that being said, I will be using the peak billboard position as my overall outcome variable of interest and alongside it investigating genre, year released, and member count as predictor variables.
+Today the data set I will be using was retrieved from the online website github. Within the online description, it can be found that that data set was originally downloaded from a public excel sheet labeling the Rolling Stone top 500 albums from 2020. The data set was thing cleaned and restructured, consisting of unifying syntax and replacing empty cells. The data set consists of variables such as genre, year released, album names, and the rankings themselves. With that being said, I will be using the peak billboard position as my overall outcome variable of interest and alongside it investigating genre, year released, and member count as predictor variables.
 
 ![<https://en.wikipedia.org/wiki/Abbey_Road>](Beatles.jpg)
 
@@ -36,9 +36,11 @@ Today the data set I will be using was retrieved from the online website github.
 
 # providing a boxplot graph to show the intial distribution of the data presented
 
-ggplot(alb) + geom_boxplot(aes(x = peak_billboard_position ,), col='orange',fill= 'white') + labs(title = "Distribution of Peak Album Billboard Position  ", x = ('Peak Number (Ranks)'))
+ggplot(alb) + 
+  geom_boxplot(aes(x = peak_billboard_position ,), col='orange',fill= 'white') +  
+  labs(title = "Distribution of Peak Album Billboard Position  ", x = ('Peak Number (Ranks)'))
 
-#easiest way to dispaly basic information fo graph distribution
+#easiest way to display basic information fo graph distribution
 
 round(fivenum(alb$peak_billboard_position, 2))
 
@@ -52,11 +54,11 @@ Shown above is a 5 number analysis of the distribution in album peak billboard r
 
 ```{r echo=FALSE}
 
-#using a dot plot graph to show corellation between numeral variable, also corellaiton coeficient to show strength of rellationship
+#using a dot plot graph to show correlation between numeric variable, also correlaiton coefficient to show strength of relationship
 
 ggplot(alb, aes(x= release_year, y= peak_billboard_position,)) +
   geom_point(shape=1) +   
-  geom_smooth(method=lm) +
+  geom_smooth(method=lm,se=FALSE) +
   labs(title= "Album Release Date vs Peak Billboard Position", x = ('Release Date (years)'), y= ('Peak Position (ranks)'))
 
 relation <- round(cor(alb$release_year, alb$peak_billboard_position, use='complete.obs'),2)
@@ -71,11 +73,11 @@ The graph above shows the relation between an album's official release date in y
 
 ```{r echo=FALSE}
 
-#using a dot plot graph to show corellation between numeral variable, also corelaiton coefficient to show strength of rellationship
+#using a dot plot graph to show correlation between numeric variable, also correlation coefficient to show strength of relationship
 
 ggplot(alb, aes(x= artist_member_count, y= peak_billboard_position,)) +
   geom_point(shape=1) +   
-  geom_smooth(method=lm) +
+  geom_smooth(method=lm,se=FALSE) +
   labs(title= "Artist Member Count vs Peak Billboard Position", x = ('Artist Count (number of members)'), y= ('Peak Position (ranks)'))
 
 relation <- round(cor(alb$artist_member_count, alb$peak_billboard_position, use='complete.obs'),2)
@@ -94,14 +96,17 @@ In addition, this numerical variable is particularly noticeable because of a sli
 
 ```{r echo=FALSE}
 
-#using a bar graphs graph to show corelation between categorical variable, also corelation coefficient to show strength of relationship
+#using a bar graphs graph to show correlation between categorical variable, also correlation coefficient to show strength of relationship
 
-ggplot(alb) + geom_histogram(aes(x= peak_billboard_position), binwidth=.02,col='#002D62',fill='#EB6E1F') + labs(title = "Analysis Peak Album Billboard Position  ", x = ('Peak Number (Ranks)')) + facet_wrap(~genre)
+ggplot(alb) + 
+  geom_histogram(aes(x= peak_billboard_position), binwidth=.02,col='#002D62',fill='#EB6E1F') + 
+  labs(title = "Analysis Peak Album Billboard Position  ", x = ('Peak Number (Ranks)')) + 
+  facet_wrap(~genre)
 
 ```
 
 ```{r echo=FALSE}
-#just to show distribution of categroical variable chosen
+#just to show distribution of categorical variable chosen
 
 aggregate(alb$peak_billboard_position, list(alb$genre), FUN=mean)
 ```
@@ -117,7 +122,7 @@ The categorical variable that I chose was Genre largely because a lot of time mu
 
 ggplot(alb, aes(x= artist_member_count, y= peak_billboard_position, color = genre)) +
   geom_point(shape=1) +   
-  geom_smooth(method=lm) +
+  geom_smooth(method=lm,se=FALSE) +
   labs(title= "Artist Member Count vs Peak Billboard Position", x = ('Artist Count (number of members)'), y= ('Peak Position (ranks)'))
 
 ```
