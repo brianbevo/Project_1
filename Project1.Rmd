@@ -26,7 +26,7 @@ alb <- read.csv('Project1_Albums.csv')
 
 # **Introduction**
 
-Today the data set I will be using was retrieved from the online website github. Within the online description, it can be found that that dataset was originally downloaded from a public excel sheet labeling the Rolling Stone top 500 albums from 2020. The dataset was thing cleaned and restructured, consisting of unifying syntax and replacing empty cells. The dataset consists of variables such as genre, year released, album names, and the ranking themselves. With that being said, I will be using the peak billboard position as my overall outcome variable of interest and alongside it investigating genre, year released, and member count as predictor variables.
+Today the data set I will be using was retrieved from the online website github. Within the online description, it can be found that that data set was originally downloaded from a public excel sheet labeling the Rolling Stone top 500 albums from 2020. The data set was thing cleaned and restructured, consisting of unifying syntax and replacing empty cells. The data set consists of variables such as genre, year released, album names, and the ranking themselves. With that being said, I will be using the peak billboard position as my overall outcome variable of interest and alongside it investigating genre, year released, and member count as predictor variables.
 
 ![<https://en.wikipedia.org/wiki/Abbey_Road>](Beatles.jpg)
 
@@ -34,7 +34,11 @@ Today the data set I will be using was retrieved from the online website github.
 
 ```{r echo=FALSE}
 
+# providing a boxplot graph to show the intial distribution of the data presented
+
 ggplot(alb) + geom_boxplot(aes(x = peak_billboard_position ,), col='orange',fill= 'white') + labs(title = "Distribution of Peak Album Billboard Position  ", x = ('Peak Number (Ranks)'))
+
+#easiest way to dispaly basic information fo graph distribution
 
 round(fivenum(alb$peak_billboard_position, 2))
 
@@ -47,6 +51,8 @@ Shown above is a 5 number analysis of the distribution in album peak billboard r
 ## **Year Released Analysis**
 
 ```{r echo=FALSE}
+
+#using a dot plot graph to show corellation between numeral variable, also corellaiton coeficient to show strength of rellationship
 
 ggplot(alb, aes(x= release_year, y= peak_billboard_position,)) +
   geom_point(shape=1) +   
@@ -64,6 +70,8 @@ The graph above shows the relation between an album's official release date in y
 ## **Member Count Analysis**
 
 ```{r echo=FALSE}
+
+#using a dot plot graph to show corellation between numeral variable, also corelaiton coefficient to show strength of rellationship
 
 ggplot(alb, aes(x= artist_member_count, y= peak_billboard_position,)) +
   geom_point(shape=1) +   
@@ -86,11 +94,15 @@ In addition, this numerical variable is particularly noticeable because of a sli
 
 ```{r echo=FALSE}
 
+#using a bar graphs graph to show corelation between categorical variable, also corelation coefficient to show strength of relationship
+
 ggplot(alb) + geom_histogram(aes(x= peak_billboard_position), binwidth=.02,col='#002D62',fill='#EB6E1F') + labs(title = "Analysis Peak Album Billboard Position  ", x = ('Peak Number (Ranks)')) + facet_wrap(~genre)
 
 ```
 
 ```{r echo=FALSE}
+#just to show distribution of categroical variable chosen
+
 aggregate(alb$peak_billboard_position, list(alb$genre), FUN=mean)
 ```
 
@@ -101,6 +113,7 @@ The chart above shows the different means attached to each genre, representing t
 The categorical variable that I chose was Genre largely because a lot of time music is ranked based off of meaning and also the representation of certain topics and events happening in the world at the time. Attached is a link that explains the affects of certain genres, largely in relation to the concepts that albums represent, and how that might show their importance to music as a whole. <https://carolinianuncg.com/2022/11/01/concept-albums-how-music-and-storytelling-unite/>
 
 ```{r echo=FALSE}
+#extra stuff to show corellation between an extra variable
 
 ggplot(alb, aes(x= artist_member_count, y= peak_billboard_position, color = genre)) +
   geom_point(shape=1) +   
