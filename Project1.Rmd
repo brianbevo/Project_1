@@ -1,0 +1,126 @@
+---
+title: "Project1"
+author: "Brian"
+date: "2024-09-25"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: true
+    smooth_scroll: true
+    code_folding: hide
+  pdf_document:
+    toc: true
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(fig.height=3, fig.width=4, warning=FALSE, tidy=TRUE, tidy.opts=list(width.cutoff=60))
+
+#needed packages:
+library(ggplot2)
+library(kableExtra)
+
+alb <- read.csv('Project1_Albums.csv')
+
+```
+
+# **Introduction**
+
+Today the data set I will be using was retrieved from the online website github. Within the online description, it can be found that that dataset was originally downloaded from a public excel sheet labeling the Rolling Stone top 500 albums from 2020. The dataset was thing cleaned and restructured, consisting of unifying syntax and replacing empty cells. The dataset consists of variables such as genre, year released, album names, and the ranking themselves. With that being said, I will be using the peak billboard position as my overall outcome variable of interest and alongside it investigating genre, year released, and member count as predictor variables.
+
+![<https://en.wikipedia.org/wiki/Abbey_Road>](Beatles.jpg)
+
+# **Outcome Variable**
+
+```{r echo=FALSE}
+
+ggplot(alb) + geom_boxplot(aes(x = peak_billboard_position ,), col='orange',fill= 'white') + labs(title = "Distribution of Peak Album Billboard Position  ", x = ('Peak Number (Ranks)'))
+
+round(fivenum(alb$peak_billboard_position, 2))
+
+```
+
+Shown above is a 5 number analysis of the distribution in album peak billboard ranks within the Rolling Stone's Top 500 albums of all time. Evaluating this, with a median of 12 and the 1st Quartile being 2 while the 3rd Quartile being 94 , we can confidently say that the graph is skewed to the right.
+
+# **Bivariate Analyses**
+
+## **Year Released Analysis**
+
+```{r echo=FALSE}
+
+ggplot(alb, aes(x= release_year, y= peak_billboard_position,)) +
+  geom_point(shape=1) +   
+  geom_smooth(method=lm) +
+  labs(title= "Album Release Date vs Peak Billboard Position", x = ('Release Date (years)'), y= ('Peak Position (ranks)'))
+
+relation <- round(cor(alb$release_year, alb$peak_billboard_position, use='complete.obs'),2)
+
+```
+
+The graph above shows the relation between an album's official release date in years and their eventual peak billboard rank appearance over the course of their time played to the public.
+
+[Seeing that that the correlation coefficient between the release date in years of an album and the peak rank of the album itself is `r relation`, the value is extremely far away from -1 and close to 0, meaning that there is a weak correlation between the two variables.]{style="color: purple;"}
+
+## **Member Count Analysis**
+
+```{r echo=FALSE}
+
+ggplot(alb, aes(x= artist_member_count, y= peak_billboard_position,)) +
+  geom_point(shape=1) +   
+  geom_smooth(method=lm) +
+  labs(title= "Artist Member Count vs Peak Billboard Position", x = ('Artist Count (number of members)'), y= ('Peak Position (ranks)'))
+
+relation <- round(cor(alb$artist_member_count, alb$peak_billboard_position, use='complete.obs'),2)
+
+```
+
+The graph above shows the relation between an album's artist count in number of me,bers and their eventual peak billboard rank appearance over the course of their time played to the public.
+
+[Seeing that that the correlation coefficient between the artist count in number of members and the peak rank of the album itself is `r relation`, the value is extremely far away from 1 and close to 0, meaning that there is a weak correlation between the two variables.]{style="color: purple;"}
+
+In addition, this numerical variable is particularly noticeable because of a slight trend in the overall appearance of the graph. Rather, it can be seen that most of the peak ranks among the top 500 albums dataset are shown to be grouped under artist groups consisting of only 1 or a few members, rather than artists groups consisting of more artists. The link below expands upon this trend and might help explain why this happens.
+
+<https://news.fit.edu/campus/is-music-better-in-groups-or-solo-that-depends/>
+
+## **Genre Analysis**
+
+```{r echo=FALSE}
+
+ggplot(alb) + geom_histogram(aes(x= peak_billboard_position), binwidth=.02,col='#002D62',fill='#EB6E1F') + labs(title = "Analysis Peak Album Billboard Position  ", x = ('Peak Number (Ranks)')) + facet_wrap(~genre)
+
+```
+
+```{r echo=FALSE}
+aggregate(alb$peak_billboard_position, list(alb$genre), FUN=mean)
+```
+
+The chart above shows the different means attached to each genre, representing the distributions in the bar graphs.
+
+[The means show that genre's like Hard Rock/Metal and Hip-hop/Rap have the lowest on average peak billboard positions compared to other genres, showing that albums under those categories are more likely to have a higher peak billboard rank.]{style="color: purple;"}
+
+The categorical variable that I chose was Genre largely because a lot of time music is ranked based off of meaning and also the representation of certain topics and events happening in the world at the time. Attached is a link that explains the affects of certain genres, largely in relation to the concepts that albums represent, and how that might show their importance to music as a whole. <https://carolinianuncg.com/2022/11/01/concept-albums-how-music-and-storytelling-unite/>
+
+```{r echo=FALSE}
+
+ggplot(alb, aes(x= artist_member_count, y= peak_billboard_position, color = genre)) +
+  geom_point(shape=1) +   
+  geom_smooth(method=lm) +
+  labs(title= "Artist Member Count vs Peak Billboard Position", x = ('Artist Count (number of members)'), y= ('Peak Position (ranks)'))
+
+```
+
+The multivariate graph above is relatively hard to interpret but seeing the various different trend lines, it can argued that their is a weak relationship between separating the artist member count by genre, and how that might reveal certain relationships with the albums peak billboard rank.
+
+# **Choice Elements**
+
+Choice A can be found under the two numerical variable analyses when I display their correlation coefficient , which evaluates the strength fo the relationship between the chose variable and the outcome variable. Choice B can be found under the member count and genre bivariate analysis when I describe the nature of the graph and interpret the relationship between what is shown. Choice C can be found when I describe the nature of the relationships present within all the bivariate graphs, and the text is change to the color purple to show its importance. Choice D can be seen at the top left of the html report and it will take you to any of the sections within the report. Choice G's multivariate graph can be seen at the end of the bivariate analyses section and involves the relationship between artist count and peak billboard rank as separated by the genre of the album.
+
+# **Conclusion**
+
+Write a conclusion that summarizes your analysis findings and suggests areas for future research. Include all references for your report at the bottom.
+
+Performing this report based off of Rolling Stone's Top 500 Albums of All Time data has allowed me to investigate several variables involving the release and ranking of albums in general. While the numerical variables of album release date and member count were not resolute enough to show a reliable relationship with an albums peak billboard ranking, plotting the categorical variable of genre, showed which genres were correlated with an overall higher peak billboard ranking. Taking this into note, their areas of concern in which in the future can improve the data given such as moving towards investigating how these trends change in general depending on the decade. Ranking the top 500 albums by decade could be an optimal step towards highlighting the shift in mindset from the general mindset surrounding album performance and rankings overall.
+
+References:
+
+<https://github.com/rfordatascience/tidytuesday/blob/master/data/2024/2024-05-07/readme.md> <https://carolinianuncg.com/2022/11/01/concept-albums-how-music-and-storytelling-unite/> <https://news.fit.edu/campus/is-music-better-in-groups-or-solo-that-depends/> <https://en.wikipedia.org/wiki/Abbey_Road> <https://pudding.cool/2024/03/greatest-music/>
